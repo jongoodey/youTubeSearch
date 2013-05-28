@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Youtube Instant with Jquery tutorial</title>
+<meta content='Youtube Instant search tutorial with jquery and ajax' name='description'/> 
+<meta content='Youtube, API, Instant' name='keywords'/> 
+<script type="text/javascript" src="http://ajax.googleapis.com/
+ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+$(".search_input").focus();
+$(".search_input").keyup(function() 
+{
+
+var search_input = $(this).val();
+var keyword= encodeURIComponent(search_input);
+
+var yt_url='http://gdata.youtube.com/feeds/api/videos?q='+keyword+'&format=5&max-results=1&v=2&alt=jsonc'; 
+
+
+$.ajax({
+type: "GET",
+url: yt_url,
+dataType:"jsonp",
+success: function(response)
+{
+if(response.data.items)
+{
+
+
+
+$.each(response.data.items, function(i,data)
+{
+var video_id=data.id;
+var video_title=data.title;
+var video_viewCount=data.viewCount;
+
+
+
+var video_frame="<iframe width='640' height='385' src='http://www.youtube.com/embed/"+video_id+"' frameborder='0' type='text/html'></iframe>";
+var final="<div id='title'>"+video_title+"</div><div>"+video_frame+"</div><div id='count'>"+video_viewCount+" Views</div>";
+
+$("#result").html(final);
+
+});
+
+
+}
+else
+{
+$("#result").html("<div id='no'>No Video</div>");
+}
+}
+
+});
+
+
+});
+
+
+});
+
+</script>
+<style>
+body {
+background-color:#86c9ef;
+color:#000;
+font-family:'Georgia', Times New Roman, Times, serif
+}
+
+.search_input
+{
+
+border:2px solid #333;
+font-size:20px;
+padding:5px;
+width:350px;
+font-family:'Georgia', Times New Roman, Times, serif;
+-moz-border-radius:5px;-webkit-border-radius:5px;
+
+
+}
+#input_box
+{
+text-align:left;
+width:640px;
+}
+#result
+{
+background-color:#000;
+margin-top:25px;
+min-height:400px;
+width:640px;
+border:solid 10px #ffffff;
+
+-moz-border-radius:9px;
+-webkit-border-radius:9px;
+
+}
+#no
+{
+padding:30px;
+font-size:24px;
+color:#fff;
+
+}
+
+#title
+{
+background-color:#fff;
+font-size:26px;
+text-align:left;
+padding-bottom:8px;
+
+}
+#count
+{
+background-color:#fff;
+text-align:left;
+padding-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div align="center">
+
+<div id="input_box">
+
+
+<input type="text" class='search_input'  /><br/>
+
+</div>
+<div id="result">
+
+</div>
+<div style="margin-top:10px;"><div height="125px" align='center'>
+
+</div></div> 
+</div>
+<iframe src="counter.html" frameborder="0" scrolling="no" height="0"></iframe>
+</body>
+</html>

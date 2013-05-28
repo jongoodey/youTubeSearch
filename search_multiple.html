@@ -1,0 +1,169 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+<title>Youtube Instant with Jquery tutorial</title> 
+<meta content='Youtube Instant search tutorial with jquery and ajax' name='description'/> 
+<meta content='Youtube, API, Instant' name='keywords'/> 
+<script type="text/javascript" src="http://ajax.googleapis.com/
+ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+ 
+<script type="text/javascript"> 
+$(document).ready(function()
+{
+$(".search_input").focus();
+$(".search_input").keyup(function() 
+{
+ 
+ $("#video").html('');
+var search_input = $(this).val();
+var keyword= encodeURIComponent(search_input);
+ 
+var yt_url='http://gdata.youtube.com/feeds/api/videos?q='+keyword+'&format=5&max-results=6&v=2&alt=jsonc'; 
+ 
+ 
+$.ajax({
+type: "GET",
+url: yt_url,
+dataType:"jsonp",
+success: function(response)
+{
+if(response.data.items)
+{
+ 
+ 
+ 
+$.each(response.data.items, function(i,data)
+{
+var video_id=data.id;
+var video_title=data.title;
+var video_viewCount=data.viewCount;
+ 
+ 
+ 
+var video_frame="<iframe width='340' height='200' src='http://www.youtube.com/embed/"+video_id+"' frameborder='0' type='text/html'></iframe>";
+var final="<div id='result'><div>"+video_frame+"</div><div id='title'>"+video_title+"</div></div>";
+ 
+$("#video").append(final);
+ 
+});
+ 
+ 
+}
+else
+{
+$("#video").html("<div id='no'>No Video</div>");
+}
+}
+ 
+});
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+});
+ 
+ 
+});
+ 
+</script> 
+<style> 
+body {
+background-color:#86c9ef;
+color:#000;
+font-family:'Georgia', Times New Roman, Times, serif
+}
+ 
+.search_input
+{
+ 
+border:2px solid #333;
+font-size:20px;
+padding:5px;
+width:350px;
+font-family:'Georgia', Times New Roman, Times, serif;
+-moz-border-radius:5px;-webkit-border-radius:5px;
+ 
+ 
+}
+#input_box
+{
+text-align:left;
+
+
+}
+#result
+{
+background-color:#000;
+margin-top:25px;
+min-height:230px;
+width:340px;
+border:solid 10px #ffffff;
+float:left;
+margin-left:10px;
+ 
+-moz-border-radius:9px;
+-webkit-border-radius:9px;
+overflow:hidden;
+overflow:auto;
+ 
+}
+#video
+{
+background-color:#000;
+
+
+ 
+}
+#no
+{
+padding:30px;
+font-size:24px;
+color:#fff;
+ 
+}
+ 
+#title
+{
+background-color:#fff;
+font-size:16px;
+text-align:left;
+padding-bottom:8px;
+height:30px;
+ 
+}
+#count
+{
+background-color:#fff;
+text-align:left;
+padding-top:8px;
+}
+</style> 
+</head> 
+ 
+<body> 
+<div align="center"> 
+ 
+<div id="input_box"> 
+
+ 
+<input type="text" class='search_input'  /><br/> 
+ 
+</div> 
+
+<div id="video"> 
+ 
+</div> 
+
+
+
+</div> 
+ 
+</body> 
+</html> 
+ 
